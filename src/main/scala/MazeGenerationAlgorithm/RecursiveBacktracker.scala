@@ -27,7 +27,6 @@ class RecursiveBacktracker(protected val width: Int, protected val height: Int, 
     *
     * @param x X coords of current Cell.
     * @param y Y coords of current Cell
-    * @param firstTime true for the first iteration because the stack is empty.
     */
   private def getNextCell(x: Int, y: Int, neighbors: Neighbors): Cell =
     if (neighbors.nonEmpty) {
@@ -45,20 +44,7 @@ class RecursiveBacktracker(protected val width: Int, protected val height: Int, 
   private def go(x: Int, y: Int, firstTime: Boolean = false): Unit ={
     if (stack.nonEmpty | firstTime){
       val neighbors: Neighbors = notVisitedNeighbors(x, y)
-      /* Définis une autre fonction pour alléger */
-/*
-      val nextCell: Cell = {
-      if (neighbors.nonEmpty) {
-        val currentCell = cellAt(x, y)
-        stack.push(currentCell)
-        val (direction, nextCoords) = neighbors.head
-        val nextCell = cellAt(x + nextCoords._1, y + nextCoords._2)
-        currentCell.knockDownWall(nextCell, direction)
-        nextCell
-      } else {
-        stack.pop()
-      }}
-*/
+
       val nextCell: Cell = getNextCell(x, y, neighbors)
 
       go(nextCell.x, nextCell.y)
