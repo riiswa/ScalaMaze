@@ -7,7 +7,7 @@ import scala.util.Random
 /** Ancestor of Maze Generation Algorithm */
 trait MazeGenerationAlgorithm {
   protected type Neighbors = Seq[(Char, (Int, Int))]
-  private final val neighbors: Neighbors = Seq('W' -> (-1, 0),
+  protected final val neighbors: Neighbors = Seq('W' -> (-1, 0),
     'E' -> (1, 0),
     'S' -> (0, 1),
     'N' -> (0, -1)
@@ -39,5 +39,7 @@ trait MazeGenerationAlgorithm {
   def build(): Maze
 
   def makeMaze(): Maze = Maze(grid, width, height, seed, (startX, startY), (endX, endY))
+
+  def validCoords(x: Int, y: Int): Boolean = (0 until width contains x) & (0 until height contains y)
 
 }

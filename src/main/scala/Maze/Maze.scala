@@ -31,7 +31,7 @@ class Cell(val x: Int, val y: Int){
     otherCell.walls(Cell.WALL_PAIRS(wall)) = false
   }
 
-  override def toString: String = "%[%s -> %s]".format((x, y).toString(), getNotDownWall.mkString(" "))
+  override def toString: String = "[%s -> %s]".format((x, y).toString(), getNotDownWall.mkString(" "))
 
   def getNotDownWall: Seq[Char] = walls.filter(_._2 == true).keys.toSeq
 
