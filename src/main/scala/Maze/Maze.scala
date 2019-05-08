@@ -48,6 +48,27 @@ trait MazeAncestor {
     *
     * @param filePath The path of the file.
     */
+  private def writeWall(pw: PrintWriter, x1: Int, y1: Int, x2: Int, y2: Int): Unit =
+    pw.println(s"<line x1=\"$x1\" y1=\"$y2\" x2=\"$x2\" y2=\"$y2\"/>")
+
+  private def initSVG(pw: PrintWriter, imageWidth: Int, imageHeight: Int, padding: Int): Unit = {
+    val width = (imageWidth + 2*padding).toFloat
+    val height = (imageHeight + 2*padding).toFloat
+    val viewWidth = imageWidth + 2*padding
+    val viewHeight = imageHeight + 2*padding
+
+    pw.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
+    pw.println("<svg xmlns=\"http://www.w3.org/2000/svg\"")
+    pw.println("    xmlns:xlink=\"http://www.w3.org/1999/xlink\"")
+    pw.println(s"    width=\"$width\" height=\"$height\" viewBox=\"${-padding} ${-padding} $viewWidth $viewHeight\">")
+    pw.println("<defs>\n<style type=\"text/css\"><![CDATA[")
+    pw.println("line {")
+    pw.println("    stroke: #000000;\n    stroke-linecap: square;")
+    pw.println("    stroke-width: 3;\n}")
+    pw.println("]]></style>\n</defs>")
+
+  }
+
   def writeSVG(filePath: String): Unit = {
     val pw = new PrintWriter(new File(filePath))
     val aspectRatio: Int = width / height
@@ -56,9 +77,18 @@ trait MazeAncestor {
     val imageWidth: Int = imageHeight * aspectRatio
     val (scy, scx) = (imageHeight / height, imageWidth / width)
 
+    /* Evite de définir une fonction dans une fonction, ta fonction writeSVG doit juste écrire dans un SVG, elle doit pas définir une nouvelle fonction
+       Utilise plutôt la formatation pw.println(s"<line x1=\"$x1\" y1=\"$y2\" x2=\"$x2\" y2=\"$y2\"/>"), c'est plus facile à lire
+     */
+/*
     def writeWall(x1: Int, y1: Int, x2: Int, y2: Int): Unit =
       pw.println("""<line x1="%d" y1="%d" x2="%d" y2="%d"/>""".format(x1, y1, x2, y2))
+*/
 
+/*
+    Fais une fonction pour tout ces prints pour alléger ta fonction
+*/
+/*
     pw.println("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
     pw.println("<svg xmlns=\"http://www.w3.org/2000/svg\"")
     pw.println("    xmlns:xlink=\"http://www.w3.org/1999/xlink\"")
@@ -70,14 +100,16 @@ trait MazeAncestor {
     pw.println("    stroke: #000000;\n    stroke-linecap: square;")
     pw.println("    stroke-width: 3;\n}")
     pw.println("]]></style>\n</defs>")
+*/
+    initSVG(pw, imageWidth, imageHeight, padding)
 
     grid.flatten.foreach(cell => {
       val (x, y) = (cell.x, cell.y)
-      if (cell.getNotDownWall.contains('S')) writeWall(x*scx, (y+1)* scy, (x+1)*scx, (y+1)*scy)
-      if (cell.getNotDownWall.contains('E')) writeWall((x+1)*scx, y*scy, (x+1)*scx, (y+1)* scy)
+      if (cell.getNotDownWall.contains('S')) writeWall(pw, x*scx, (y+1)* scy, (x+1)*scx, (y+1)*scy)
+      if (cell.getNotDownWall.contains('E')) writeWall(pw, (x+1)*scx, y*scy, (x+1)*scx, (y+1)* scy)
     })
 
-
+    /* Pareil ici, fais une fonction pour les prints */
     pw.println("<line x1=\"0\" y1=\"0\" x2=\"%d\" y2=\"0\"/>".format(imageWidth))
     pw.println("<line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"%d\"/>".format(imageHeight))
     pw.println("</svg>")
