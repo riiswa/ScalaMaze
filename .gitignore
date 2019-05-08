@@ -1,5 +1,6 @@
 *.class
 *.log
+*.svg
 
 .DS_Store
 .idea
