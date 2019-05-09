@@ -31,7 +31,8 @@ trait MazeGenerationAlgorithm {
 
   /** Return the neighbors that who are in grid limits. */
   protected def validNeighbors(x: Int, y: Int): Neighbors  = random.shuffle(neighbors).filter(
-    neighbor => (0 until width contains  (x + neighbor._2._1)) && (0 until height contains (y + neighbor._2._2)))
+    neighbor => validCoords(x + neighbor._2._1, y + neighbor._2._2))
+
 
   /** Return the not visited neighbors */
   protected def notVisitedNeighbors(x: Int, y: Int): Neighbors = validNeighbors(x, y).filter(
