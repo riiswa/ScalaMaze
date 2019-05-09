@@ -1,6 +1,7 @@
 package com.github.scalamaze.mazegenerationalgorithm
 
 import com.github.scalamaze.maze._
+import com.github.scalamaze.maze.cells.Cell
 
 import scala.collection.mutable
 
