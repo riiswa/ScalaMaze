@@ -5,7 +5,7 @@ import com.github.scalamaze.maze.cells.Cell
 
 import scala.collection.mutable
 
-/** Recursive Backtracker Algorithm for Perfect Maze generation
+/** Recursive Backtracker for Perfect Maze generation
   *
   * This is somewhat related to the recursive backtracker solving method, and requires stack up to the size of the Maze.
   * When carving, be as greedy as possible, and always carve into an unmade section if one is next to the current cell.
@@ -17,18 +17,14 @@ import scala.collection.mutable
   * solution path that follows the outside edge, where the entire interior of the Maze is attached to the boundary by a
   * single stem.
   *
-  * @param width Width of the Maze.
-  * @param height Height of the Maze.
-  * @param seed Generate the Maze from a seed, leave empty for a random seed
+  * @param width    Width of the Maze.
+  * @param height   Height of the Maze.
+  * @param seed     Generate the Maze from a seed, leave empty for a random seed.
+  * @param cameraOn On the camera: Allow gif creation.
   */
 class RecursiveBacktracker(protected val width: Int, protected val height: Int, protected val seed: Option[Long]= None, protected val cameraOn: Boolean = false) extends MazeGenerationAlgorithm {
   private val stack: mutable.ArrayStack[Cell] = new mutable.ArrayStack[Cell]()
 
-  /** Recursive Backtracker running.
-    *
-    * @param x X coords of current Cell.
-    * @param y Y coords of current Cell
-    */
   private def getNextCell(x: Int, y: Int, neighbors: Neighbors): Cell =
     if (neighbors.nonEmpty) {
       val currentCell = cellAt(x, y)
@@ -51,7 +47,7 @@ class RecursiveBacktracker(protected val width: Int, protected val height: Int, 
     }
   }
 
-  def build(): Maze = {
+  def build: Maze = {
     go(startX, startY, firstTime = true)
     if (cameraOn) camera.createGif()
     makeMaze()
