@@ -37,6 +37,6 @@ See also the list of [contributors](https://github.com/riiswa/scalamaze/contribu
 
 ## License
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE.md](https://github.com/riiswa/scalamaze/LICENSE.md) file for details
+This project is licensed under the Apache License 2.0 - see the [LICENSE.md](https://github.com/riiswa/scalamaze/LICENSE) file for details
 
   
