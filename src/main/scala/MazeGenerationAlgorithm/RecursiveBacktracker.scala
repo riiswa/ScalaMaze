@@ -21,7 +21,7 @@ import scala.collection.mutable
   * @param height Height of the Maze.
   * @param seed Generate the Maze from a seed, leave empty for a random seed
   */
-class RecursiveBacktracker(protected val width: Int, protected val height: Int, protected val seed: Option[Long]= None) extends MazeGenerationAlgorithm {
+class RecursiveBacktracker(protected val width: Int, protected val height: Int, protected val seed: Option[Long]= None, protected val cameraOn: Boolean = false) extends MazeGenerationAlgorithm {
   private val stack: mutable.ArrayStack[Cell] = new mutable.ArrayStack[Cell]()
 
   /** Recursive Backtracker running.
@@ -36,6 +36,7 @@ class RecursiveBacktracker(protected val width: Int, protected val height: Int, 
       val (direction, nextCoords) = neighbors.head
       val nextCell = cellAt(x + nextCoords._1, y + nextCoords._2)
       currentCell.knockDownWall(nextCell, direction)
+      if (cameraOn) camera.capture(makeMaze())
       nextCell
     } else {
       stack.pop()
@@ -45,15 +46,14 @@ class RecursiveBacktracker(protected val width: Int, protected val height: Int, 
   private def go(x: Int, y: Int, firstTime: Boolean = false): Unit ={
     if (stack.nonEmpty | firstTime){
       val neighbors: Neighbors = notVisitedNeighbors(x, y)
-
       val nextCell: Cell = getNextCell(x, y, neighbors)
-
       go(nextCell.x, nextCell.y)
     }
   }
 
   def build(): Maze = {
     go(startX, startY, firstTime = true)
+    if (cameraOn) camera.createGif()
     makeMaze()
   }
 }

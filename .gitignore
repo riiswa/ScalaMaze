@@ -1,8 +1,10 @@
 *.class
 *.log
 *.svg
+*.gif
 
 .DS_Store
 .idea
 project/
 target/
+tmp/

@@ -2,6 +2,7 @@ package com.github.scalamaze.mazegenerationalgorithm
 
 import com.github.scalamaze.maze._
 import com.github.scalamaze.maze.cells.Cell
+import com.github.scalamaze.utils.Camera
 
 import scala.util.Random
 
@@ -25,6 +26,9 @@ trait MazeGenerationAlgorithm {
 
   protected val endX: Int = random.nextInt(width - 1)
   protected val endY: Int = random.nextInt(height - 1)
+
+  protected val cameraOn: Boolean
+  lazy protected val camera = new Camera()
 
   /** Return the cell at the x, y pos. */
   protected def cellAt(x: Int, y: Int): Cell = grid(x)(y)

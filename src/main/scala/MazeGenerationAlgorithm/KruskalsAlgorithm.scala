@@ -5,7 +5,7 @@ import com.github.scalamaze.utils.Tree
 
 import scala.collection.mutable
 
-class KruskalsAlgorithm(protected val width: Int, protected val height: Int, protected val seed: Option[Long]= None) extends MazeGenerationAlgorithm {
+class KruskalsAlgorithm(protected val width: Int, protected val height: Int, protected val seed: Option[Long]= None, protected val cameraOn: Boolean = false) extends MazeGenerationAlgorithm {
   private val sets = Array.fill[Tree](width, height){new Tree}
 
   private val edges: mutable.ArrayStack[(Int, Int, Char)] =
@@ -24,6 +24,7 @@ class KruskalsAlgorithm(protected val width: Int, protected val height: Int, pro
         if (!set1.isConnectedTo(set2)) {
           set1.connectTo(set2)
           cellAt(x, y).knockDownWall(cellAt(nx, ny), direction)
+          if (cameraOn) camera.capture(makeMaze())
         }
       }
       go()
@@ -32,6 +33,7 @@ class KruskalsAlgorithm(protected val width: Int, protected val height: Int, pro
 
   def build(): Maze = {
     go()
+    if (cameraOn) camera.createGif()
     makeMaze()
   }
 

@@ -5,7 +5,7 @@ import com.github.scalamaze.maze.cells.Cell
 
 import scala.collection.mutable
 
-class PrimsAlgorithm(protected val width: Int, protected val height: Int, protected val seed: Option[Long]= None) extends MazeGenerationAlgorithm {
+class PrimsAlgorithm(protected val width: Int, protected val height: Int, protected val seed: Option[Long]= None, protected val cameraOn: Boolean = false) extends MazeGenerationAlgorithm {
   private val frontier = mutable.Set[Cell](cellAt(startX, startY))
   private val visited = mutable.Set[Cell]()
 
@@ -23,6 +23,7 @@ class PrimsAlgorithm(protected val width: Int, protected val height: Int, protec
       if (visitedNeighbors.nonEmpty) {
         val (direction, (x, y)) = random.shuffle(visitedNeighbors).head
         cell.knockDownWall(cellAt(cell.x + x, cell.y + y), direction)
+        if (cameraOn) camera.capture(makeMaze())
       }
 
       frontier ++= validNeighbors(cell.x, cell.y)
@@ -34,6 +35,7 @@ class PrimsAlgorithm(protected val width: Int, protected val height: Int, protec
 
   def build(): Maze = {
     go()
+    if (cameraOn) camera.createGif()
     makeMaze()
   }
 
